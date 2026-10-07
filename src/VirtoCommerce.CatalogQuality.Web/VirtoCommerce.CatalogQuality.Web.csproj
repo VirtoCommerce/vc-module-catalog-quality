@@ -28,4 +28,19 @@
     <ProjectReference Include="..\VirtoCommerce.CatalogQuality.Data.PostgreSql\VirtoCommerce.CatalogQuality.Data.PostgreSql.csproj" />
     <ProjectReference Include="..\VirtoCommerce.CatalogQuality.Data.SqlServer\VirtoCommerce.CatalogQuality.Data.SqlServer.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ai\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <AiFolder Include="ai\**" />
+  </ItemGroup>
+
+  <Target Name="CopyCustomContentOnPublish" AfterTargets="Publish">
+    <Copy SourceFiles="@(AiFolder)" DestinationFiles="$(PublishDir)\..\%(Identity)" />
+  </Target>
+  
 </Project>
