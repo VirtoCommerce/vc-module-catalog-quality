@@ -1,0 +1,59 @@
+{
+  "catalog-quality": {
+    "main-menu": {
+      "title": "Catalog quality"
+    },
+    "blades": {
+      "quality-data-list": {
+        "title": "Catalog quality",
+        "placeholders": {
+          "search": "Search by entity ID..."
+        },
+        "labels": {
+          "entity-type": "Entity type",
+          "entity-id": "Entity ID",
+          "readiness-score": "Quality score",
+          "modified-date": "Modified"
+        }
+      },
+      "quality-data-details": {
+        "title": "Quality data",
+        "labels": {
+          "entity-type": "Entity type",
+          "entity-id": "Entity ID",
+          "readiness-score": "Quality score",
+          "suggestions": "Suggestions",
+          "suggestions-url": "Suggestions file",
+          "created": "Created",
+          "modified": "Modified"
+        }
+      }
+    },
+    "dialogs": {
+      "quality-data-save": {
+        "title": "Save quality data",
+        "message": "Quality data has been modified. Do you want to save changes?"
+      }
+    },
+    "widgets": {
+      "quality-data": {
+        "title": "Product data score"
+      }
+    }
+  },
+  "permissions": {
+    "catalog-quality:access": "Open CatalogQuality menu",
+    "catalog-quality:create": "Create CatalogQuality related data",
+    "catalog-quality:read": "View CatalogQuality related data",
+    "catalog-quality:update": "Update CatalogQuality related data",
+    "catalog-quality:delete": "Delete CatalogQuality related data"
+  },
+  "settings": {
+    "CatalogQuality": {
+      "Enabled": {
+        "title": "CatalogQuality Enabled",
+        "description": "CatalogQuality Enabled setting"
+      }
+    }
+  }
+}

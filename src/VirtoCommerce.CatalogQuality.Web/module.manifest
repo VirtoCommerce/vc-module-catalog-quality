@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<module>
+  <id>VirtoCommerce.CatalogQuality</id>
+  <version>3.1000.0</version>
+  <version-tag></version-tag>
+
+  <platformVersion>3.1071.0</platformVersion>
+  <dependencies>
+    <!--<dependency id="VirtoCommerce.Core" version="3.1001.2" />-->
+    <dependency id="VirtoCommerce.Assets" version="3.1000.0" />
+    <dependency id="VirtoCommerce.Catalog" version="3.1000.0" />
+  </dependencies>
+
+  <title>CatalogQuality</title>
+  <description>VirtoCommerce CatalogQuality module powered with AI tools</description>
+
+  <authors>
+    <author>Vladimir Buravlev</author>
+  </authors>
+  <owners>
+    <owner>VirtoCommerce</owner>
+  </owners>
+
+  <projectUrl>https://github.com/VirtoCommerce/vc-module-catalog-quality</projectUrl>
+  <iconUrl>Modules/$(VirtoCommerce.CatalogQuality)/Content/logo.png</iconUrl>
+  <requireLicenseAcceptance>false</requireLicenseAcceptance>
+
+  <assemblyFile>VirtoCommerce.CatalogQuality.Web.dll</assemblyFile>
+  <moduleType>VirtoCommerce.CatalogQuality.Web.Module, VirtoCommerce.CatalogQuality.Web</moduleType>
+
+  <releaseNotes>First version.</releaseNotes>
+  <copyright>Copyright © 2026 VirtoCommerce. All rights reserved</copyright>
+  <tags>extension module</tags>
+  <useFullTypeNameInSwagger>false</useFullTypeNameInSwagger>
+</module>

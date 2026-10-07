@@ -1,0 +1,80 @@
+name: vc_catalog_update_product_quality_data
+description: |
+  Save the quality evaluation result for ONE catalog product: its readiness score and
+  the improvement suggestions. Call it once per evaluated product, after you have
+  analyzed the product's data (descriptions, properties, localizations, images).
+
+  Only one quality data record may exist per product. Always call
+  `vc_catalog_get_product_quality_data` first:
+    - record found → pass its `id`: the existing record is overwritten;
+    - nothing found → omit `id`: a new record is created.
+  Calling without `id` for an already evaluated product creates a duplicate record.
+
+  Replace semantics: the supplied `readinessScore` and `suggestions` fully replace the
+  previously saved evaluation of this product — always send the complete, final text
+  of the suggestions, not just the new part.
+
+parameters:
+  type: object
+  required:
+    - productId
+    - readinessScore
+    - suggestions
+  properties:
+    id:
+      type: string
+      description: |
+        Id of the existing quality data record of this product, as returned by
+        `vc_catalog_get_product_quality_data`. Omit it only when that tool returned nothing.
+    productId:
+      type: string
+      description: |
+        Id of the evaluated catalog product, e.g. `"76b6d640-e398-472b-85fa-9583a6b8e694"`.
+        Use the product `id` returned by the catalog tools — not its SKU/code or name.
+    readinessScore:
+      type: integer
+      minimum: 0
+      maximum: 100
+      description: |
+        Overall readiness of the product for publishing, from 0 (unusable) to 100
+        (complete, high-quality data that needs no changes).
+    suggestions:
+      type: string
+      description: |
+        Human-readable list of concrete improvement suggestions for the product
+        (missing or weak descriptions, missing properties, missing localizations,
+        missing or poor images, etc.). May be long; Markdown is allowed.
+        Send an empty string if the product needs no improvements.
+
+execution:
+  endpoint: /api/catalogquality/update
+  method: POST
+  mappings:
+    request:
+      body: |
+        {%- if id is defined and id -%}
+          {%- set body = {
+            "id": id,
+            "entityId": productId,
+            "entityType": "VirtoCommerce.CatalogModule.Core.Model.CatalogProduct",
+            "readinessScore": readinessScore,
+            "suggestions": suggestions
+          } -%}
+        {%- else -%}
+          {%- set body = {
+            "entityId": productId,
+            "entityType": "VirtoCommerce.CatalogModule.Core.Model.CatalogProduct",
+            "readinessScore": readinessScore,
+            "suggestions": suggestions
+          } -%}
+        {%- endif -%}
+        {{ body }}
+    response: ~
+
+#permission:
+#  - catalog:update
+
+tags:
+  - product
+  - evaluation
+  - quality

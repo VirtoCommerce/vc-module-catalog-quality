@@ -1,0 +1,38 @@
+<div class="blade-static">
+  <div class="form-group">
+    <div class="form-input __search">
+      <input placeholder="{{ 'catalog-quality.blades.quality-data-list.placeholders.search' | translate }}" ng-model="filter.keyword" ng-keyup="$event.which === 13 && filter.criteriaChanged()" />
+      <button class="btn __other" style="position: relative; right: 45px;">
+        <i class="btn-ico fa fa-times-circle" title="Clear" ng-click="filter.keyword = null; filter.criteriaChanged()"></i>
+      </button>
+    </div>
+  </div>
+</div>
+<div class="blade-static __bottom" ng-if="pageSettings.itemsPerPageCount < pageSettings.totalItems" ng-include="'pagerTemplate.html'"></div>
+<div class="blade-content __medium-wide">
+  <div class="blade-inner">
+    <div class="inner-block">
+      <div class="table-wrapper" ng-init="setGridOptions({
+           useExternalSorting: true,
+           rowTemplate: 'quality-data-list.row.html',
+           rowHeight: 40,
+           columnDefs: [
+             { name: 'entityId', displayName: 'catalog-quality.blades.quality-data-list.labels.entity-id' },
+             { name: 'readinessScore', displayName: 'catalog-quality.blades.quality-data-list.labels.readiness-score', width: 140 },
+             { name: 'modifiedDate', displayName: 'catalog-quality.blades.quality-data-list.labels.modified-date', cellFilter: 'date:\'short\'', width: 160, sort: { direction: uiGridConstants.DESC } }
+           ]})">
+        <div ui-grid="gridOptions" ui-grid-auto-resize ui-grid-save-state ui-grid-resize-columns ui-grid-move-columns ui-grid-height></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/ng-template" id="quality-data-list.row.html">
+  <div ng-click="grid.appScope.selectNode(row.entity)"
+       ng-repeat="(colRenderIndex, col) in colContainer.renderedColumns track by col.uid"
+       ui-grid-one-bind-id-grid="rowRenderIndex + '-' + col.uid + '-cell'"
+       class="ui-grid-cell"
+       ng-class="{ 'ui-grid-row-header-cell': col.isRowHeader, '__selected': row.entity.id === grid.appScope.selectedNodeId }"
+       role="{{ col.isRowHeader ? 'rowheader' : 'gridcell' }}"
+       ui-grid-cell></div>
+</script>

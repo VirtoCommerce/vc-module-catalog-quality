@@ -1,0 +1,28 @@
+<div class="blade-content __medium-wide">
+  <div class="blade-inner">
+    <div class="inner-block">
+      <form class="form" name="formScope" ng-init="setForm(formScope)">
+        <fieldset ng-disabled="!blade.hasUpdatePermission()">
+          <div class="form-group">
+            <label class="form-label">{{ 'catalog-quality.blades.quality-data-details.labels.entity-id' | translate }}</label>
+            <div class="form-input">
+              <input ng-model="blade.currentEntity.entityId" readonly />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ 'catalog-quality.blades.quality-data-details.labels.readiness-score' | translate }}</label>
+            <div class="form-input">
+              <input type="number" ng-model="blade.currentEntity.readinessScore" min="0" max="100" readonly="" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">{{ 'catalog-quality.blades.quality-data-details.labels.suggestions' | translate }}</label>
+            <div class="form-input">
+              <textarea ng-model="blade.currentEntity.suggestions" rows="20" readonly=""></textarea>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </div>
+</div>
