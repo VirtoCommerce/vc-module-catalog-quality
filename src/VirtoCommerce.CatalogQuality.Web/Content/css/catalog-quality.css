@@ -1,0 +1,109 @@
+/* Read-only Markdown view (quality data suggestions) */
+.catalog-quality-markdown {
+    font-size: 13px;
+    line-height: 1.5;
+    word-wrap: break-word;
+}
+
+.catalog-quality-markdown > :first-child {
+    margin-top: 0;
+}
+
+.catalog-quality-markdown > :last-child {
+    margin-bottom: 0;
+}
+
+.catalog-quality-markdown p,
+.catalog-quality-markdown ul,
+.catalog-quality-markdown ol,
+.catalog-quality-markdown pre,
+.catalog-quality-markdown table {
+    margin: 0 0 8px;
+}
+
+.catalog-quality-markdown h1,
+.catalog-quality-markdown h2,
+.catalog-quality-markdown h3,
+.catalog-quality-markdown h4 {
+    margin: 12px 0 6px;
+    font-weight: 600;
+}
+
+.catalog-quality-markdown ul {
+    list-style: disc;
+    padding-left: 18px;
+}
+
+.catalog-quality-markdown ol {
+    list-style: decimal;
+    padding-left: 18px;
+}
+
+.catalog-quality-markdown ul ul,
+.catalog-quality-markdown ol ul {
+    list-style: circle;
+    margin: 2px 0 0;
+}
+
+/* Undo the platform's list style (em-dash ::before marker with a hanging indent) */
+.catalog-quality-markdown li {
+    margin: 2px 0;
+    padding: 0;
+    text-indent: 0;
+}
+
+.catalog-quality-markdown li::before {
+    content: none;
+}
+
+.catalog-quality-markdown strong {
+    font-weight: 600;
+}
+
+.catalog-quality-markdown em {
+    font-style: italic;
+}
+
+.catalog-quality-markdown code {
+    padding: 1px 4px;
+    border-radius: 3px;
+    background: #f2f5f7;
+    font-family: Consolas, Menlo, monospace;
+    font-size: 0.9em;
+}
+
+.catalog-quality-markdown pre {
+    padding: 8px;
+    border-radius: 3px;
+    background: #f2f5f7;
+    overflow-x: auto;
+}
+
+.catalog-quality-markdown pre code {
+    padding: 0;
+    background: none;
+}
+
+.catalog-quality-markdown table {
+    width: 100%;
+    margin-bottom: 12px;
+    border-collapse: collapse;
+}
+
+.catalog-quality-markdown th,
+.catalog-quality-markdown td {
+    padding: 4px 8px;
+    border: 1px solid #dee9f0;
+    text-align: left;
+    vertical-align: top;
+}
+
+.catalog-quality-markdown th {
+    background: #f2f5f7;
+    font-weight: 600;
+}
+
+/* Score column */
+.catalog-quality-markdown td:nth-child(2) {
+    white-space: nowrap;
+}

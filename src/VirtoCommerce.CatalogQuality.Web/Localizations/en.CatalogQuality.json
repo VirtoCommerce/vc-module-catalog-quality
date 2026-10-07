@@ -23,6 +23,7 @@
           "entity-id": "Entity ID",
           "readiness-score": "Quality score",
           "suggestions": "Suggestions",
+          "no-suggestions": "No suggestions — the product data is complete.",
           "suggestions-url": "Suggestions file",
           "created": "Created",
           "modified": "Modified"

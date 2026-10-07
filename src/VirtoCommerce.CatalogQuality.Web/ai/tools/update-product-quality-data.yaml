@@ -13,6 +13,7 @@ description: |
   Replace semantics: the supplied `readinessScore` and `suggestions` fully replace the
   previously saved evaluation of this product — always send the complete, final text
   of the suggestions, not just the new part.
+require_approval: false
 
 parameters:
   type: object
@@ -41,10 +42,10 @@ parameters:
     suggestions:
       type: string
       description: |
-        Human-readable list of concrete improvement suggestions for the product
-        (missing or weak descriptions, missing properties, missing localizations,
-        missing or poor images, etc.). May be long; Markdown is allowed.
-        Send an empty string if the product needs no improvements.
+        Markdown text: a scoring table (points per criterion and the total) followed by
+        human-readable improvement suggestions for the product (missing images,
+        properties without values, missing or poor description translations).
+        For a complete product send only the scoring table.
 
 execution:
   endpoint: /api/catalogquality/update

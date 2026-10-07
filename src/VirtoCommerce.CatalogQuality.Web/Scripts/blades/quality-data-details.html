@@ -16,10 +16,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="form-label">{{ 'catalog-quality.blades.quality-data-details.labels.suggestions' | translate }}</label>
-            <div class="form-input">
-              <textarea ng-model="blade.currentEntity.suggestions" rows="20" readonly=""></textarea>
-            </div>
+            <div class="catalog-quality-markdown" ng-if="blade.currentEntity.suggestions" ng-bind-html="blade.currentEntity.suggestions | catalogQualityMarkdown"></div>
+            <div class="note" ng-if="!blade.isLoading && !blade.currentEntity.suggestions">{{ 'catalog-quality.blades.quality-data-details.labels.no-suggestions' | translate }}</div>
           </div>
         </fieldset>
       </form>
