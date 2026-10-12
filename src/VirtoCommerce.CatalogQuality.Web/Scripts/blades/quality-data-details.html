@@ -4,18 +4,6 @@
       <form class="form" name="formScope" ng-init="setForm(formScope)">
         <fieldset ng-disabled="!blade.hasUpdatePermission()">
           <div class="form-group">
-            <label class="form-label">{{ 'catalog-quality.blades.quality-data-details.labels.entity-id' | translate }}</label>
-            <div class="form-input">
-              <input ng-model="blade.currentEntity.entityId" readonly />
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">{{ 'catalog-quality.blades.quality-data-details.labels.readiness-score' | translate }}</label>
-            <div class="form-input">
-              <input type="number" ng-model="blade.currentEntity.readinessScore" min="0" max="100" readonly="" />
-            </div>
-          </div>
-          <div class="form-group">
             <div class="catalog-quality-markdown" ng-if="blade.currentEntity.suggestions" ng-bind-html="blade.currentEntity.suggestions | catalogQualityMarkdown"></div>
             <div class="note" ng-if="!blade.isLoading && !blade.currentEntity.suggestions">{{ 'catalog-quality.blades.quality-data-details.labels.no-suggestions' | translate }}</div>
           </div>

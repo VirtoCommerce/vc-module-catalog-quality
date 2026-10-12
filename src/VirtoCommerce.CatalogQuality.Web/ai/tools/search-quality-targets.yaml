@@ -1,0 +1,44 @@
+name: vc_catalog_search_quality_targets
+description: |
+  List the quality targets — the scoring profiles a product can be evaluated against
+  (e.g. "Publication readiness for Chinese marketplaces"). Returns each target's `id`,
+  `name` and `description`, without its scoring prompt.
+  Call it with no arguments to get all targets, then pick the one whose name and
+  description best match the user's request by meaning — users rarely say a target's
+  exact name. Load the chosen target's scoring rules with `vc_catalog_get_quality_target`.
+require_approval: false
+
+parameters:
+  type: object
+  properties:
+    skip:
+      type: integer
+      default: 0
+      minimum: 0
+    take:
+      type: integer
+      default: 100
+      minimum: 1
+      maximum: 100
+  required: []
+
+execution:
+  endpoint: /api/catalogquality/target/search
+  method: POST
+  mappings:
+    request:
+      body:
+        skip: "{{skip}}"
+        take: "{{take}}"
+    response:
+      items: "results[*].{id: id, name: name, description: description}"
+      totalCount: "totalCount"
+
+#permission:
+#  - catalog:read
+
+tags:
+  - quality
+  - evaluation
+  - search
+  - read

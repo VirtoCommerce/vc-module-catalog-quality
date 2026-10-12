@@ -7,6 +7,7 @@ public class QualityData : AuditableEntity, ICloneable
 {
     public string EntityId { get; set; }
     public string EntityType { get; set; }
+    public string TargetId { get; set; }
     public int ReadinessScore { get; set; }
     public string Suggestions { get; set; }
     public string SuggestionsUrl { get; set; }

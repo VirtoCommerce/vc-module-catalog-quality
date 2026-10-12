@@ -1,54 +1,58 @@
 name: vc_catalog_update_product_quality_data
 description: |
-  Save the quality evaluation result for ONE catalog product: its readiness score and
-  the improvement suggestions. Call it once per evaluated product, after you have
-  analyzed the product's data (descriptions, properties, localizations, images).
+  Save the quality evaluation of ONE catalog product for ONE quality target: its readiness
+  score and the improvement suggestions. Call it once per evaluated product, after you have
+  evaluated the product against the target's scoring prompt.
 
-  Only one quality data record may exist per product. Always call
-  `vc_catalog_get_product_quality_data` first:
+  Only one quality data record may exist per product and target. Always call
+  `vc_catalog_get_product_quality_data` with the same product and target first:
     - record found → pass its `id`: the existing record is overwritten;
     - nothing found → omit `id`: a new record is created.
-  Calling without `id` for an already evaluated product creates a duplicate record.
+  Calling without `id` for an already evaluated product and target creates a duplicate record.
 
   Replace semantics: the supplied `readinessScore` and `suggestions` fully replace the
-  previously saved evaluation of this product — always send the complete, final text
-  of the suggestions, not just the new part.
+  previously saved evaluation — always send the complete, final text of the suggestions,
+  not just the new part.
 require_approval: false
 
 parameters:
   type: object
   required:
     - productId
+    - targetId
     - readinessScore
     - suggestions
   properties:
     id:
       type: string
       description: |
-        Id of the existing quality data record of this product, as returned by
+        Id of the existing quality data record of this product and target, as returned by
         `vc_catalog_get_product_quality_data`. Omit it only when that tool returned nothing.
     productId:
       type: string
       description: |
         Id of the evaluated catalog product, e.g. `"76b6d640-e398-472b-85fa-9583a6b8e694"`.
         Use the product `id` returned by the catalog tools — not its SKU/code or name.
+    targetId:
+      type: string
+      description: Id of the quality target the product was evaluated against.
     readinessScore:
       type: integer
       minimum: 0
       maximum: 100
       description: |
-        Overall readiness of the product for publishing, from 0 (unusable) to 100
-        (complete, high-quality data that needs no changes).
+        Overall readiness of the product for this target, from 0 (unusable) to 100
+        (meets every criterion of the target).
     suggestions:
       type: string
       description: |
-        Markdown text: a scoring table (points per criterion and the total) followed by
-        human-readable improvement suggestions for the product (missing images,
-        properties without values, missing or poor description translations).
-        For a complete product send only the scoring table.
+        Markdown text: a "Quality score" heading, a scoring table (points per criterion
+        of the target), then a "Suggestions" heading with human-readable improvement
+        suggestions for the product. For a product that meets every criterion send only
+        the score heading and the scoring table.
 
 execution:
-  endpoint: /api/catalogquality/update
+  endpoint: /api/catalogquality/data/update
   method: POST
   mappings:
     request:
@@ -58,6 +62,7 @@ execution:
             "id": id,
             "entityId": productId,
             "entityType": "VirtoCommerce.CatalogModule.Core.Model.CatalogProduct",
+            "targetId": targetId,
             "readinessScore": readinessScore,
             "suggestions": suggestions
           } -%}
@@ -65,6 +70,7 @@ execution:
           {%- set body = {
             "entityId": productId,
             "entityType": "VirtoCommerce.CatalogModule.Core.Model.CatalogProduct",
+            "targetId": targetId,
             "readinessScore": readinessScore,
             "suggestions": suggestions
           } -%}

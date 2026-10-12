@@ -6,14 +6,14 @@ angular.module('virtoCommerce.catalogQuality')
             var formScope;
 
             blade.title = 'catalog-quality.blades.quality-data-details.title';
-            blade.subtitle = blade.entityType + ' ' + blade.entityId;
+            blade.subtitle = [blade.entityName || blade.entityId, blade.targetName].filter(Boolean).join(' — ');
             blade.headIcon = 'fa fa-check-square-o';
             blade.updatePermission = 'catalog:update';
 
             blade.refresh = function (parentRefresh) {
                 blade.isLoading = true;
 
-                api.getByEntity({ entityId: blade.entityId, entityType: blade.entityType }, function (data) {
+                api.dataGetByEntity({ entityId: blade.entityId, entityType: blade.entityType, targetId: blade.targetId }, function (data) {
                     blade.currentEntity = angular.copy(data);
                     blade.originalEntity = data;
                     blade.isLoading = false;
@@ -37,7 +37,7 @@ angular.module('virtoCommerce.catalogQuality')
             function saveChanges() {
                 blade.isLoading = true;
 
-                api.update(blade.currentEntity, function () {
+                api.dataUpdate(blade.currentEntity, function () {
                     blade.refresh(true);
                 }, function () {
                     blade.isLoading = false;

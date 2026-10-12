@@ -26,6 +26,9 @@ public class CatalogQualityDbContext : DbContextBase
         modelBuilder.Entity<QualityDataEntity>().ToTable("QualityData").HasKey(x => x.Id);
         modelBuilder.Entity<QualityDataEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
 
+        modelBuilder.Entity<QualityTargetEntity>().ToTable("QualityTarget").HasKey(x => x.Id);
+        modelBuilder.Entity<QualityTargetEntity>().Property(x => x.Id).HasMaxLength(128).ValueGeneratedOnAdd();
+
         switch (Database.ProviderName)
         {
             case "Pomelo.EntityFrameworkCore.MySql":

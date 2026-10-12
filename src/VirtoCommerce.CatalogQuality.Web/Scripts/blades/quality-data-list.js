@@ -28,7 +28,7 @@ angular.module('virtoCommerce.catalogQuality')
                     take: $scope.pageSettings.itemsPerPageCount,
                 };
 
-                api.search(criteria, function (data) {
+                api.dataSearch(criteria, function (data) {
                     blade.isLoading = false;
                     $scope.pageSettings.totalItems = data.totalCount;
                     blade.currentEntities = data.results;

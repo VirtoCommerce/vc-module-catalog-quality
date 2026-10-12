@@ -23,10 +23,29 @@
           "entity-id": "Entity ID",
           "readiness-score": "Quality score",
           "suggestions": "Suggestions",
-          "no-suggestions": "No suggestions — the product data is complete.",
+          "no-suggestions": "No suggestions - the product data was not scored.",
           "suggestions-url": "Suggestions file",
           "created": "Created",
           "modified": "Modified"
+        }
+      },
+      "quality-target-list": {
+        "title": "Quality targets",
+        "labels": {
+          "name": "Name"
+        }
+      },
+      "quality-target-details": {
+        "title-new": "New quality target",
+        "subtitle": "Quality target",
+        "labels": {
+          "name": "Name",
+          "description": "Description",
+          "prompt": "Prompt"
+        },
+        "placeholders": {
+          "description": "One or two sentences on what this target is for, e.g. \"Readiness of products for publishing on Chinese marketplaces (Tmall, JD)\". The AI uses it to pick the target from the user's request.",
+          "prompt":"Describe how products are scored for this target: criteria, weights, required languages..."
         }
       }
     },
@@ -34,6 +53,14 @@
       "quality-data-save": {
         "title": "Save quality data",
         "message": "Quality data has been modified. Do you want to save changes?"
+      },
+      "quality-target-save": {
+        "title": "Save quality target",
+        "message": "Quality target has been modified. Do you want to save changes?"
+      },
+      "quality-target-delete": {
+        "title": "Delete quality targets",
+        "message": "Are you sure you want to delete the selected quality targets?"
       }
     },
     "widgets": {

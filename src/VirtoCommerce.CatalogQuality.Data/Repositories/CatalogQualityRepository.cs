@@ -17,6 +17,7 @@ public class CatalogQualityRepository : DbContextRepositoryBase<CatalogQualityDb
     }
 
     public IQueryable<QualityDataEntity> QualityDatas => DbContext.Set<QualityDataEntity>();
+    public IQueryable<QualityTargetEntity> QualityTargets => DbContext.Set<QualityTargetEntity>();
 
     public virtual async Task<IList<QualityDataEntity>> GetQualityDatasByIdsAsync(IList<string> ids, string responseGroup = null)
     {
@@ -29,16 +30,29 @@ public class CatalogQualityRepository : DbContextRepositoryBase<CatalogQualityDb
         return result;
     }
 
-    public virtual async Task<QualityDataEntity> GetQualityDataByEntityAsync(string entityId, string entityType)
+    public virtual async Task<QualityDataEntity> GetQualityDataByEntityAsync(string entityId, string entityType, string targetId)
     {
         QualityDataEntity result = null;
 
         if (!string.IsNullOrEmpty(entityId) && !string.IsNullOrEmpty(entityType))
         {
-            result = await QualityDatas.FirstOrDefaultAsync(x => x.EntityId == entityId && x.EntityType == entityType);
+            // Empty targetId matches records saved without a target
+            targetId = string.IsNullOrEmpty(targetId) ? null : targetId;
+
+            result = await QualityDatas.FirstOrDefaultAsync(x => x.EntityId == entityId && x.EntityType == entityType && x.TargetId == targetId);
         }
 
         return result;
     }
 
+    public virtual async Task<IList<QualityTargetEntity>> GetQualityTargetsByIdsAsync(IList<string> ids, string responseGroup = null)
+    {
+        var result = Array.Empty<QualityTargetEntity>();
+
+        if (!ids.IsNullOrEmpty())
+        {
+            result = await QualityTargets.Where(x => ids.Contains(x.Id)).ToArrayAsync();
+        }
+        return result;
+    }
 }

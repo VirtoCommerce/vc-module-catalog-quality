@@ -9,7 +9,7 @@ public interface IQualityDataService
 {
     Task<SearchQualityDataResult> SearchAsync(SearchQualityDataCriteria criteria);
 
-    Task<QualityData> GetQualityDataByEntityAsync(string entityId, string entityType);
+    Task<QualityData> GetQualityDataByEntityAsync(string entityId, string entityType, string targetId);
 
     Task SaveChangesAsync(IList<QualityData> models);
 

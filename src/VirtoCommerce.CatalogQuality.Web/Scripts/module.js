@@ -16,9 +16,9 @@ angular.module(moduleName, [])
                         'platformWebApp.bladeNavigationService',
                         function (bladeNavigationService) {
                             var newBlade = {
-                                id: 'qualityDataList',
-                                controller: 'virtoCommerce.catalogQuality.qualityDataListController',
-                                template: 'Modules/$(VirtoCommerce.CatalogQuality)/Scripts/blades/quality-data-list.html',
+                                id: 'qualityTargetList',
+                                controller: 'virtoCommerce.catalogQuality.qualityTargetListController',
+                                template: 'Modules/$(VirtoCommerce.CatalogQuality)/Scripts/blades/quality-target-list.html',
                                 isClosingDisabled: true,
                             };
                             bladeNavigationService.showBlade(newBlade);

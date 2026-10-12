@@ -11,4 +11,6 @@ public class GetQualityDataQuery : IQuery<QualityData>
 
     [Required]
     public string EntityType { get; set; }
+
+    public string TargetId { get; set; }
 }

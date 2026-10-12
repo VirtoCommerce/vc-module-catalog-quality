@@ -21,12 +21,17 @@
     margin: 0 0 8px;
 }
 
+/* "Quality score" and "Suggestions" headings — same modest size whatever heading level the text uses */
 .catalog-quality-markdown h1,
 .catalog-quality-markdown h2,
 .catalog-quality-markdown h3,
-.catalog-quality-markdown h4 {
+.catalog-quality-markdown h4,
+.catalog-quality-markdown h5,
+.catalog-quality-markdown h6 {
     margin: 12px 0 6px;
+    font-size: 14px;
     font-weight: 600;
+    line-height: 1.4;
 }
 
 .catalog-quality-markdown ul {

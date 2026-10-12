@@ -47,11 +47,11 @@ public class QualityDataService : IQualityDataService
         return result;
     }
 
-    public virtual async Task<QualityData> GetQualityDataByEntityAsync(string entityId, string entityType)
+    public virtual async Task<QualityData> GetQualityDataByEntityAsync(string entityId, string entityType, string targetId)
     {
         using var repository = _repositoryFactory();
 
-        var qualityEntity = await repository.GetQualityDataByEntityAsync(entityId, entityType);
+        var qualityEntity = await repository.GetQualityDataByEntityAsync(entityId, entityType, targetId);
 
         var quality = qualityEntity?.ToModel(ExType<QualityData>.New());
         if (quality != null)
@@ -90,7 +90,10 @@ public class QualityDataService : IQualityDataService
 
     protected virtual string GetSuggestionsBlobUrl(QualityData model)
     {
-        return $"{SuggestionsFolder}/{model.EntityType}/{model.EntityId}.md";
+        // One file per entity and target, so evaluations for different targets don't overwrite each other
+        return string.IsNullOrEmpty(model.TargetId)
+            ? $"{SuggestionsFolder}/{model.EntityType}/{model.EntityId}.md"
+            : $"{SuggestionsFolder}/{model.EntityType}/{model.EntityId}/{model.TargetId}.md";
     }
 
     protected virtual async Task<string> WriteSuggestionsAsync(QualityData model)

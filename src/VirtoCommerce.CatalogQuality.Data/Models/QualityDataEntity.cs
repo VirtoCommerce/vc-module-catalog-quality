@@ -9,10 +9,15 @@ namespace VirtoCommerce.CatalogQuality.Data.Models;
 public class QualityDataEntity : AuditableEntity, IDataEntity<QualityDataEntity, QualityData>
 {
     [Required]
+    [StringLength(128)]
     public string EntityId { get; set; }
 
     [Required]
+    [StringLength(128)]
     public string EntityType { get; set; }
+
+    [StringLength(128)]
+    public string TargetId { get; set; }
 
     public int ReadinessScore { get; set; }
 
@@ -36,6 +41,7 @@ public class QualityDataEntity : AuditableEntity, IDataEntity<QualityDataEntity,
 
         EntityId = model.EntityId;
         EntityType = model.EntityType;
+        TargetId = model.TargetId;
         ReadinessScore = model.ReadinessScore;
         SuggestionsUrl = model.SuggestionsUrl;
 
@@ -57,6 +63,7 @@ public class QualityDataEntity : AuditableEntity, IDataEntity<QualityDataEntity,
 
         model.EntityId = EntityId;
         model.EntityType = EntityType;
+        model.TargetId = TargetId;
         model.ReadinessScore = ReadinessScore;
         model.SuggestionsUrl = SuggestionsUrl;
 
@@ -72,6 +79,7 @@ public class QualityDataEntity : AuditableEntity, IDataEntity<QualityDataEntity,
 
         target.EntityId = EntityId;
         target.EntityType = EntityType;
+        target.TargetId = TargetId;
         target.ReadinessScore = ReadinessScore;
         target.SuggestionsUrl = SuggestionsUrl;
     }

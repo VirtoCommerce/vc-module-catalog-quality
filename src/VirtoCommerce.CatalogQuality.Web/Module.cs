@@ -52,6 +52,9 @@ public class Module : IModule, IHasConfiguration
         serviceCollection.AddTransient<IQualityDataSearchService, QualityDataSearchService>();
         serviceCollection.AddTransient<IQualityDataService, QualityDataService>();
 
+        serviceCollection.AddTransient<IQualityTargetCrudService, QualityTargetCrudService>();
+        serviceCollection.AddTransient<IQualityTargetSearchService, QualityTargetSearchService>();
+
         serviceCollection.AddMediatR(configuration => configuration.RegisterServicesFromAssemblyContaining<Anchor>());
     }
 

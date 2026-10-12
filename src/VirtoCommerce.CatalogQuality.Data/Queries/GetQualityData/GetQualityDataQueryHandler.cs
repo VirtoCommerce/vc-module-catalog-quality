@@ -35,7 +35,7 @@ public class GetQualityDataQueryHandler : IQueryHandler<GetQualityDataQuery, Qua
             throw new ArgumentNullException(nameof(request.EntityType));
         }
 
-        var result = await _qualityDataService.GetQualityDataByEntityAsync(request.EntityId, request.EntityType);
+        var result = await _qualityDataService.GetQualityDataByEntityAsync(request.EntityId, request.EntityType, request.TargetId);
 
         return result;
     }

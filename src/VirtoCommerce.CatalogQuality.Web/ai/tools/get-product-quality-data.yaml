@@ -1,31 +1,37 @@
 name: vc_catalog_get_product_quality_data
 description: |
-  Load the existing quality evaluation of ONE catalog product: the quality data record `id`,
-  the saved `readinessScore` and `suggestions`, and when it was last evaluated.
+  Load the existing quality evaluation of ONE catalog product for ONE quality target:
+  the quality data record `id`, the saved `readinessScore` and `suggestions`, and when it
+  was last evaluated. A product has a separate evaluation per target.
   Call it before saving a new evaluation: if a record is returned, pass its `id` to
   `vc_catalog_update_product_quality_data` so the existing record is overwritten.
-  An empty result means the product has never been evaluated.
+  An empty result (no `id`) means the product was never evaluated for this target.
 require_approval: false
 
 parameters:
   type: object
   required:
     - productId
+    - targetId
   properties:
     productId:
       type: string
       description: |
         Id of the catalog product, e.g. `"76b6d640-e398-472b-85fa-9583a6b8e694"`.
         Use the product `id` returned by the catalog tools — not its SKU/code or name.
+    targetId:
+      type: string
+      description: Id of the quality target the evaluation is for.
 
 execution:
-  endpoint: /api/catalogquality/getbyentity
+  endpoint: /api/catalogquality/data/getbyentity
   method: GET
   mappings:
     request:
       query:
         entityId: "{{productId}}"
         entityType: "VirtoCommerce.CatalogModule.Core.Model.CatalogProduct"
+        targetId: "{{targetId}}"
       body: ~
     response:
       id: "id"

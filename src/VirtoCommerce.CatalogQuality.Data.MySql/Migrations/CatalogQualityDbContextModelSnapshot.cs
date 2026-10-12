@@ -38,11 +38,13 @@ namespace VirtoCommerce.CatalogQuality.Data.MySql.Migrations
 
                     b.Property<string>("EntityId")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
 
                     b.Property<string>("EntityType")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
 
                     b.Property<string>("ModifiedBy")
                         .HasMaxLength(64)
@@ -58,9 +60,51 @@ namespace VirtoCommerce.CatalogQuality.Data.MySql.Migrations
                         .HasMaxLength(2083)
                         .HasColumnType("varchar(2083)");
 
+                    b.Property<string>("TargetId")
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
                     b.HasKey("Id");
 
                     b.ToTable("QualityData", (string)null);
+                });
+
+            modelBuilder.Entity("VirtoCommerce.CatalogQuality.Data.Models.QualityTargetEntity", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(128)
+                        .HasColumnType("varchar(128)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(1024)
+                        .HasColumnType("varchar(1024)");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasMaxLength(64)
+                        .HasColumnType("varchar(64)");
+
+                    b.Property<DateTime?>("ModifiedDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
+
+                    b.Property<string>("Prompt")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("QualityTarget", (string)null);
                 });
 #pragma warning restore 612, 618
         }
