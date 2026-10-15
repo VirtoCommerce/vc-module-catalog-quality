@@ -8,7 +8,7 @@ angular.module('virtoCommerce.catalogQuality')
             blade.title = 'catalog-quality.blades.quality-data-details.title';
             blade.subtitle = [blade.entityName || blade.entityId, blade.targetName].filter(Boolean).join(' — ');
             blade.headIcon = 'fa fa-check-square-o';
-            blade.updatePermission = 'catalog:update';
+            blade.updatePermission = 'catalog-quality:update';
 
             blade.refresh = function (parentRefresh) {
                 blade.isLoading = true;

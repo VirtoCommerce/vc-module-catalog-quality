@@ -40,7 +40,7 @@ execution:
       modifiedDate: "modifiedDate"
 
 #permission:
-#  - catalog:read
+#  - catalog-quality:read
 
 tags:
   - product

@@ -7,23 +7,23 @@ public static class ModuleConstants
 {
     public static class Security
     {
-        //public static class Permissions
-        //{
-        //    public const string Access = "catalog-quality:access";
-        //    public const string Create = "catalog-quality:create";
-        //    public const string Read = "catalog-quality:read";
-        //    public const string Update = "catalog-quality:update";
-        //    public const string Delete = "catalog-quality:delete";
+        public static class Permissions
+        {
+            public const string Access = "catalog-quality:access";
+            public const string Create = "catalog-quality:create";
+            public const string Read = "catalog-quality:read";
+            public const string Update = "catalog-quality:update";
+            public const string Delete = "catalog-quality:delete";
 
-        //    public static string[] AllPermissions { get; } =
-        //    [
-        //        Access,
-        //        Create,
-        //        Read,
-        //        Update,
-        //        Delete,
-        //    ];
-        //}
+            public static string[] AllPermissions { get; } =
+            [
+                Access,
+                Create,
+                Read,
+                Update,
+                Delete,
+            ];
+        }
     }
 
     public static class Settings

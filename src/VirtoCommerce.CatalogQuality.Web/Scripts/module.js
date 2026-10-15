@@ -36,7 +36,7 @@ angular.module(moduleName, [])
                 title: 'catalog-quality.main-menu.title',
                 priority: 100,
                 action: function () { $state.go('workspace.CatalogQualityState'); },
-                permission: 'catalog:access',
+                permission: 'catalog-quality:access',
             };
             mainMenuService.addMenuItem(menuItem);
 
@@ -44,7 +44,8 @@ angular.module(moduleName, [])
             var productQualityWidget = {
                 entityType: 'VirtoCommerce.CatalogModule.Core.Model.CatalogProduct',
                 controller: 'virtoCommerce.catalogQuality.qualityDataWidgetController',
-                template: 'Modules/$(VirtoCommerce.CatalogQuality)/Scripts/widgets/quality-data-widget.tpl.html'
+                template: 'Modules/$(VirtoCommerce.CatalogQuality)/Scripts/widgets/quality-data-widget.tpl.html',
+                permission: 'catalog-quality:read',
             };
             widgetService.registerWidget(productQualityWidget, 'itemDetail');
         }

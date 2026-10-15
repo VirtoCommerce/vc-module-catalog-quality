@@ -12,6 +12,7 @@ using VirtoCommerce.CatalogQuality.Data.Repositories;
 using VirtoCommerce.CatalogQuality.Data.Services;
 using VirtoCommerce.CatalogQuality.Data.SqlServer;
 using VirtoCommerce.Platform.Core.Modularity;
+using VirtoCommerce.Platform.Core.Security;
 using VirtoCommerce.Platform.Core.Settings;
 using VirtoCommerce.Platform.Data.MySql.Extensions;
 using VirtoCommerce.Platform.Data.PostgreSql.Extensions;
@@ -67,8 +68,8 @@ public class Module : IModule, IHasConfiguration
         settingsRegistrar.RegisterSettings(ModuleConstants.Settings.AllSettings, ModuleInfo.Id);
 
         // Register permissions
-        //var permissionsRegistrar = serviceProvider.GetRequiredService<IPermissionsRegistrar>();
-        //permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "CatalogQuality", ModuleConstants.Security.Permissions.AllPermissions);
+        var permissionsRegistrar = serviceProvider.GetRequiredService<IPermissionsRegistrar>();
+        permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "CatalogQuality", ModuleConstants.Security.Permissions.AllPermissions);
 
         // Apply migrations
         using var serviceScope = serviceProvider.CreateScope();

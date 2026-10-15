@@ -35,7 +35,7 @@ execution:
       totalCount: "totalCount"
 
 #permission:
-#  - catalog:read
+#  - catalog-quality:read
 
 tags:
   - quality

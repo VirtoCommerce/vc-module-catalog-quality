@@ -6,7 +6,7 @@ angular.module('virtoCommerce.catalogQuality')
             var formScope;
 
             blade.headIcon = 'fa fa-bullseye';
-            blade.updatePermission = 'catalog:update';
+            blade.updatePermission = 'catalog-quality:update';
 
             function initialize(entity) {
                 blade.currentEntity = angular.copy(entity);

@@ -9,7 +9,7 @@ using VirtoCommerce.CatalogQuality.Core.Models.Search;
 using VirtoCommerce.CatalogQuality.Data.Commands;
 using VirtoCommerce.CatalogQuality.Data.Queries;
 using VirtoCommerce.CatalogQuality.Data.Queries.GetQualityData;
-using Permissions = VirtoCommerce.CatalogModule.Core.ModuleConstants.Security.Permissions;
+using Permissions = VirtoCommerce.CatalogQuality.Core.ModuleConstants.Security.Permissions;
 
 namespace VirtoCommerce.CatalogQuality.Web.Controllers.Api;
 

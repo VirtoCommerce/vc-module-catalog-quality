@@ -95,7 +95,7 @@ angular.module('virtoCommerce.catalogQuality')
                         openDetails({ isNew: true });
                     },
                     canExecuteMethod: function () { return true; },
-                    permission: 'catalog:update',
+                    permission: 'catalog-quality:update',
                 },
                 {
                     name: 'platform.commands.delete',
@@ -106,7 +106,7 @@ angular.module('virtoCommerce.catalogQuality')
                     canExecuteMethod: function () {
                         return $scope.gridApi && _.any($scope.gridApi.selection.getSelectedRows());
                     },
-                    permission: 'catalog:delete',
+                    permission: 'catalog-quality:delete',
                 },
             ];
 

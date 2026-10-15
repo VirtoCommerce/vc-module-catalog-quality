@@ -31,7 +31,7 @@ execution:
       prompt: "results[0].prompt"
 
 #permission:
-#  - catalog:read
+#  - catalog-quality:read
 
 tags:
   - quality

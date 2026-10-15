@@ -79,7 +79,7 @@ execution:
     response: ~
 
 #permission:
-#  - catalog:update
+#  - catalog-quality:update
 
 tags:
   - product
