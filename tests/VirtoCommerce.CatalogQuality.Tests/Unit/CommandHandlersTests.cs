@@ -4,9 +4,12 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
+using VirtoCommerce.CatalogQuality.Core.Events;
 using VirtoCommerce.CatalogQuality.Core.Models;
 using VirtoCommerce.CatalogQuality.Core.Services;
 using VirtoCommerce.CatalogQuality.Data.Commands;
+using VirtoCommerce.Platform.Core.Common;
+using VirtoCommerce.Platform.Core.Events;
 using Xunit;
 
 namespace VirtoCommerce.CatalogQuality.Tests.Unit;
@@ -16,6 +19,7 @@ public class CommandHandlersTests
 {
     private readonly Mock<IQualityDataService> _qualityDataServiceMock = new();
     private readonly Mock<IQualityTargetCrudService> _qualityTargetCrudServiceMock = new();
+    private readonly Mock<IEventPublisher> _eventPublisherMock = new();
 
     // --- UpdateQualityDataCommandHandler ---
 
@@ -131,7 +135,7 @@ public class CommandHandlersTests
     public async Task UpdateQualityTarget_SavesTheTarget()
     {
         // Arrange
-        var handler = new UpdateQualityTargetCommandHandler(_qualityTargetCrudServiceMock.Object);
+        var handler = CreateUpdateQualityTargetHandler();
         var target = new QualityTarget { Name = "Catalog Publishing" };
 
         // Act
@@ -142,10 +146,69 @@ public class CommandHandlersTests
     }
 
     [Fact]
+    public async Task UpdateQualityTarget_NewTarget_DoesNotPublishChangedEvent()
+    {
+        // Arrange
+        var handler = CreateUpdateQualityTargetHandler();
+        var target = new QualityTarget { Name = "Catalog Publishing" };
+
+        // Act
+        await handler.Handle(new UpdateQualityTargetCommand { QualityTarget = target }, CancellationToken.None);
+
+        // Assert
+        _eventPublisherMock.Verify(x => x.Publish(It.IsAny<TargetChangedEvent>(), It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task UpdateQualityTarget_ExistingTarget_PublishesChangedEventAfterSave()
+    {
+        // Arrange
+        var handler = CreateUpdateQualityTargetHandler();
+        var target = new QualityTarget { Id = "t1", Name = "Catalog Publishing" };
+        var calls = new List<string>();
+        TargetChangedEvent publishedEvent = null;
+
+        _qualityTargetCrudServiceMock
+            .Setup(x => x.SaveChangesAsync(It.IsAny<IList<QualityTarget>>()))
+            .Callback(() => calls.Add("save"))
+            .Returns(Task.CompletedTask);
+        _eventPublisherMock
+            .Setup(x => x.Publish(It.IsAny<TargetChangedEvent>(), It.IsAny<CancellationToken>()))
+            .Callback<TargetChangedEvent, CancellationToken>((e, _) =>
+            {
+                calls.Add("publish");
+                publishedEvent = e;
+            })
+            .Returns(Task.CompletedTask);
+
+        // Act
+        await handler.Handle(new UpdateQualityTargetCommand { QualityTarget = target }, CancellationToken.None);
+
+        // Assert
+        Assert.Equal(["save", "publish"], calls);
+        var entry = Assert.Single(publishedEvent.ChangedEntries);
+        Assert.Same(target, entry.NewEntry);
+        Assert.Equal(EntryState.Modified, entry.EntryState);
+    }
+
+    [Fact]
+    public async Task UpdateQualityTarget_NullRequest_Throws()
+    {
+        // Arrange
+        var handler = CreateUpdateQualityTargetHandler();
+
+        // Act
+        var act = () => handler.Handle(null, CancellationToken.None);
+
+        // Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(act);
+    }
+
+    [Fact]
     public async Task UpdateQualityTarget_NullTarget_Throws()
     {
         // Arrange
-        var handler = new UpdateQualityTargetCommandHandler(_qualityTargetCrudServiceMock.Object);
+        var handler = CreateUpdateQualityTargetHandler();
 
         // Act
         var act = () => handler.Handle(new UpdateQualityTargetCommand(), CancellationToken.None);
@@ -153,6 +216,12 @@ public class CommandHandlersTests
         // Assert
         await Assert.ThrowsAsync<ArgumentNullException>(act);
         _qualityTargetCrudServiceMock.Verify(x => x.SaveChangesAsync(It.IsAny<IList<QualityTarget>>()), Times.Never);
+        _eventPublisherMock.Verify(x => x.Publish(It.IsAny<TargetChangedEvent>(), It.IsAny<CancellationToken>()), Times.Never);
+    }
+
+    private UpdateQualityTargetCommandHandler CreateUpdateQualityTargetHandler()
+    {
+        return new UpdateQualityTargetCommandHandler(_qualityTargetCrudServiceMock.Object, _eventPublisherMock.Object);
     }
 
     // --- DeleteQualityTargetCommandHandler ---
