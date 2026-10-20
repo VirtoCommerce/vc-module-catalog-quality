@@ -141,7 +141,7 @@ public class QualityDataService : IQualityDataService
         var blobUrl = GetSuggestionsBlobUrl(model);
 
         await using var stream = await _blobStorageProvider.OpenWriteAsync(blobUrl);
-        await using var writer = new StreamWriter(stream, Encoding.UTF8);
+        await using var writer = new StreamWriter(stream, new UTF8Encoding(encoderShouldEmitUTF8Identifier: false));
         await writer.WriteAsync(model.Suggestions);
 
         return blobUrl;
@@ -149,6 +149,11 @@ public class QualityDataService : IQualityDataService
 
     protected virtual async Task<string> ReadSuggestionsAsync(string blobUrl)
     {
+        if (string.IsNullOrEmpty(blobUrl))
+        {
+            return null;
+        }
+
         var blobInfo = await _blobStorageProvider.GetBlobInfoAsync(blobUrl);
         if (blobInfo == null)
         {
