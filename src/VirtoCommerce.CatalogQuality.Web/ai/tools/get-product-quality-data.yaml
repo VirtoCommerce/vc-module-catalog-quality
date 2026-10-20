@@ -1,10 +1,9 @@
 name: vc_catalog_get_product_quality_data
 description: |
-  Load the existing quality evaluation of ONE catalog product for ONE quality target:
-  the quality data record `id`, the saved `readinessScore` and `suggestions`, and when it
-  was last evaluated. A product has a separate evaluation per target.
-  Call it before saving a new evaluation: if a record is returned, pass its `id` to
-  `vc_catalog_update_product_quality_data` so the existing record is overwritten.
+  Load the previously saved quality evaluation of ONE catalog product for ONE quality
+  target: the saved `readinessScore` and `suggestions`, and when it was last evaluated.
+  A product has a separate evaluation per target. Use it to compare a new score with
+  the previous one — it is NOT needed before saving.
   An empty result (no `id`) means the product was never evaluated for this target.
 require_approval: false
 

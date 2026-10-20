@@ -64,6 +64,8 @@ public class QualityDataService : IQualityDataService
 
     public virtual async Task SaveChangesAsync(IList<QualityData> models)
     {
+        models = await ResolveExistingRecordsAsync(models);
+
         foreach (var model in models.Where(x => x.Suggestions != null))
         {
             model.SuggestionsUrl = await WriteSuggestionsAsync(model);
@@ -88,9 +90,47 @@ public class QualityDataService : IQualityDataService
         }
     }
 
+    protected virtual async Task<IList<QualityData>> ResolveExistingRecordsAsync(IList<QualityData> models)
+    {
+        var result = models
+            .GroupBy(x => GetRecordKey(x.EntityId, x.EntityType, x.TargetId), StringComparer.OrdinalIgnoreCase)
+            .Select(x => x.Last())
+            .ToList();
+
+        var newModels = result.Where(x => x.IsTransient()).ToList();
+        if (newModels.Count == 0)
+        {
+            return result;
+        }
+
+        using var repository = _repositoryFactory();
+
+        var existingEntities = await repository.GetQualityDatasByEntitiesAsync(
+            newModels.Select(x => x.EntityId).Distinct().ToList(),
+            newModels.Select(x => x.EntityType).Distinct().ToList());
+
+        var existingIds = existingEntities
+            .GroupBy(x => GetRecordKey(x.EntityId, x.EntityType, x.TargetId), StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(x => x.Key, x => x.First().Id, StringComparer.OrdinalIgnoreCase);
+
+        foreach (var model in newModels)
+        {
+            if (existingIds.TryGetValue(GetRecordKey(model.EntityId, model.EntityType, model.TargetId), out var existingId))
+            {
+                model.Id = existingId;
+            }
+        }
+
+        return result;
+    }
+
+    private static string GetRecordKey(string entityId, string entityType, string targetId)
+    {
+        return $"{entityType}|{entityId}|{(string.IsNullOrEmpty(targetId) ? null : targetId)}";
+    }
+
     protected virtual string GetSuggestionsBlobUrl(QualityData model)
     {
-        // One file per entity and target, so evaluations for different targets don't overwrite each other
         return string.IsNullOrEmpty(model.TargetId)
             ? $"{SuggestionsFolder}/{model.EntityType}/{model.EntityId}.md"
             : $"{SuggestionsFolder}/{model.EntityType}/{model.EntityId}/{model.TargetId}.md";

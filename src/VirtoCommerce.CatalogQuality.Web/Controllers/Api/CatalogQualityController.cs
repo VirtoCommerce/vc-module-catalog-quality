@@ -58,6 +58,19 @@ public class CatalogQualityController : Controller
     }
 
     [HttpPost]
+    [Route("data/bulkupdate")]
+    [Authorize(Permissions.Update)]
+    [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> DataBulkUpdate([FromBody] QualityData[] qualityDatas)
+    {
+        var command = ExType<BulkUpdateQualityDataCommand>.New();
+        command.QualityDatas = qualityDatas;
+
+        await _mediator.Send(command);
+        return NoContent();
+    }
+
+    [HttpPost]
     [Route("target/search")]
     [Authorize(Permissions.Read)]
     public async Task<ActionResult<SearchQualityTargetResult>> TargetSearch([FromBody] SearchQualityTargetQuery query)

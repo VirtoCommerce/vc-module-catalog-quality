@@ -45,6 +45,17 @@ public class CatalogQualityRepository : DbContextRepositoryBase<CatalogQualityDb
         return result;
     }
 
+    public virtual async Task<IList<QualityDataEntity>> GetQualityDatasByEntitiesAsync(IList<string> entityIds, IList<string> entityTypes)
+    {
+        var result = Array.Empty<QualityDataEntity>();
+
+        if (!entityIds.IsNullOrEmpty() && !entityTypes.IsNullOrEmpty())
+        {
+            result = await QualityDatas.Where(x => entityIds.Contains(x.EntityId) && entityTypes.Contains(x.EntityType)).ToArrayAsync();
+        }
+        return result;
+    }
+
     public virtual async Task<IList<QualityTargetEntity>> GetQualityTargetsByIdsAsync(IList<string> ids, string responseGroup = null)
     {
         var result = Array.Empty<QualityTargetEntity>();

@@ -13,6 +13,7 @@ public interface ICatalogQualityRepository : IRepository
 
     Task<IList<QualityDataEntity>> GetQualityDatasByIdsAsync(IList<string> ids, string responseGroup = null);
     Task<QualityDataEntity> GetQualityDataByEntityAsync(string entityId, string entityType, string targetId);
+    Task<IList<QualityDataEntity>> GetQualityDatasByEntitiesAsync(IList<string> entityIds, IList<string> entityTypes);
 
     Task<IList<QualityTargetEntity>> GetQualityTargetsByIdsAsync(IList<string> ids, string responseGroup = null);
 }
