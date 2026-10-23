@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Moq;
@@ -6,7 +8,6 @@ using VirtoCommerce.CatalogQuality.Core.Models;
 using VirtoCommerce.CatalogQuality.Core.Models.Search;
 using VirtoCommerce.CatalogQuality.Core.Services;
 using VirtoCommerce.CatalogQuality.Data.Queries;
-using VirtoCommerce.CatalogQuality.Data.Queries.GetQualityData;
 using Xunit;
 
 namespace VirtoCommerce.CatalogQuality.Tests.Unit;
@@ -18,6 +19,7 @@ public class QueryHandlersTests
 
     private readonly Mock<IQualityDataService> _qualityDataServiceMock = new();
     private readonly Mock<IQualityTargetSearchService> _qualityTargetSearchServiceMock = new();
+    private readonly Mock<IQualityTargetCrudService> _qualityTargetCrudServiceMock = new();
 
     // --- GetQualityDataQueryHandler ---
 
@@ -116,6 +118,67 @@ public class QueryHandlersTests
 
         // Act
         var act = () => handler.Handle(null, CancellationToken.None);
+
+        // Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(act);
+    }
+
+    // --- GetQualityTargetQueryHandler ---
+
+    [Fact]
+    public async Task GetQualityTarget_ReturnsTargetById()
+    {
+        // Arrange
+        var expected = new QualityTarget { Id = "t1" };
+        _qualityTargetCrudServiceMock
+            .Setup(x => x.GetAsync(It.Is<IList<string>>(ids => ids.Single() == "t1"), It.IsAny<string>(), It.IsAny<bool>()))
+            .ReturnsAsync([expected]);
+        var handler = new GetQualityTargetQueryHandler(_qualityTargetCrudServiceMock.Object);
+
+        // Act
+        var result = await handler.Handle(new GetQualityTargetQuery { Id = "t1" }, CancellationToken.None);
+
+        // Assert
+        Assert.Same(expected, result);
+    }
+
+    [Fact]
+    public async Task GetQualityTarget_UnknownId_ReturnsNull()
+    {
+        // Arrange
+        _qualityTargetCrudServiceMock
+            .Setup(x => x.GetAsync(It.IsAny<IList<string>>(), It.IsAny<string>(), It.IsAny<bool>()))
+            .ReturnsAsync([]);
+        var handler = new GetQualityTargetQueryHandler(_qualityTargetCrudServiceMock.Object);
+
+        // Act
+        var result = await handler.Handle(new GetQualityTargetQuery { Id = "missing" }, CancellationToken.None);
+
+        // Assert
+        Assert.Null(result);
+    }
+
+    [Fact]
+    public async Task GetQualityTarget_NullRequest_Throws()
+    {
+        // Arrange
+        var handler = new GetQualityTargetQueryHandler(_qualityTargetCrudServiceMock.Object);
+
+        // Act
+        var act = () => handler.Handle(null, CancellationToken.None);
+
+        // Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(act);
+    }
+
+    [Fact]
+    public async Task GetQualityTarget_NullId_Throws()
+    {
+        // Arrange
+        var handler = new GetQualityTargetQueryHandler(_qualityTargetCrudServiceMock.Object);
+
+        // Act
+        var act = () => handler.Handle(new GetQualityTargetQuery(), CancellationToken.None);
 
         // Assert
         await Assert.ThrowsAsync<ArgumentNullException>(act);

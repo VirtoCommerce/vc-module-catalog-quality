@@ -6,6 +6,7 @@ angular.module('virtoCommerce.catalogQuality')
             dataUpdate: { method: 'POST', url: 'api/catalogquality/data/update' },
             dataBulkUpdate: { method: 'POST', url: 'api/catalogquality/data/bulkupdate' },
             targetSearch: { method: 'POST', url: 'api/catalogquality/target/search' },
+            targetGetById: { method: 'GET', url: 'api/catalogquality/target/:id' },
             targetUpdate: { method: 'POST', url: 'api/catalogquality/target/update' },
             targetDelete: { method: 'DELETE', url: 'api/catalogquality/target/delete' },
         });

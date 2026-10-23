@@ -1,11 +1,11 @@
-name: vc_catalog_update_product_quality_data
+name: vc_quality_update_quality_data
 description: |
-  Save quality evaluations of products (of any entity type) in ONE call — one entry per product and
-  quality target (e.g. one product scored against 3 targets = 3 entries; 5 products
+  Save quality evaluations of entities of ONE type (e.g. catalog products) in ONE call — one entry
+  per entity and quality target (e.g. one entity scored against 3 targets = 3 entries; 5 entities
   against 1 target = 5 entries). Call it once, after all evaluations are done.
 
-  No record ids needed: the server keeps one evaluation per product and target —
-  an existing evaluation of the same product and target is overwritten, otherwise a
+  No record ids needed: the server keeps one evaluation per entity and target —
+  an existing evaluation of the same entity and target is overwritten, otherwise a
   new one is created.
 
   Replace semantics: `readinessScore` and `suggestions` fully replace the previously
@@ -21,40 +21,40 @@ parameters:
     entityType:
       type: string
       description: |
-        Full type name of the evaluated entity. Pass exactly the value given in your instructions.
+        Full type name of the evaluated entities. Pass exactly the value given in your instructions.
     evaluations:
       type: array
       minItems: 1
       maxItems: 100
-      description: One entry per evaluated product and quality target.
+      description: One entry per evaluated entity and quality target.
       items:
         type: object
         additionalProperties: false
         required:
-          - productId
+          - entityId
           - targetId
           - readinessScore
           - suggestions
         properties:
-          productId:
+          entityId:
             type: string
             description: |
-              Id of the evaluated product (of the `entityType` type), e.g. `"76b6d640-e398-472b-85fa-9583a6b8e694"`.
-              Use the product `id` — not its SKU/code or name.
+              Id of the evaluated entity (of the `entityType` type), e.g. `"76b6d640-e398-472b-85fa-9583a6b8e694"`.
+              Use the entity `id` — not its SKU/code or name.
           targetId:
             type: string
-            description: Id of the quality target the product was evaluated against.
+            description: Id of the quality target the entity was evaluated against.
           readinessScore:
             type: integer
             minimum: 0
             maximum: 100
-            description: Readiness of the product for this target, 0..100.
+            description: Readiness of the entity for this target, 0..100.
           suggestions:
             type: string
             description: |
               Markdown text: a "Quality score" heading, a scoring table (points per criterion
               of the target), then a "Suggestions" heading with improvement suggestions.
-              For a product that meets every criterion only the score heading and the table.
+              For an entity that meets every criterion only the score heading and the table.
 
 execution:
   endpoint: /api/catalogquality/data/bulkupdate
@@ -65,7 +65,7 @@ execution:
         {%- set items = [] -%}
         {%- for e in evaluations -%}
           {%- set _ = items.append({
-            "entityId": e.productId,
+            "entityId": e.entityId,
             "entityType": entityType,
             "targetId": e.targetId,
             "readinessScore": e.readinessScore,
@@ -79,6 +79,5 @@ execution:
 #  - catalog-quality:update
 
 tags:
-  - product
   - evaluation
   - quality

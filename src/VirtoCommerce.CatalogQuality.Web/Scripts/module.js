@@ -27,12 +27,12 @@ angular.module(moduleName, [])
                 });
         }
     ])
-    .run(['platformWebApp.mainMenuService', '$state', 'platformWebApp.widgetService',
-        function (mainMenuService, $state, widgetService) {
+    .run(['platformWebApp.mainMenuService', '$state', 'platformWebApp.widgetService', 'virtoCommerce.catalogQuality.qualityDataTypes',
+        function (mainMenuService, $state, widgetService, qualityDataTypes) {
             //Register module in main menu
             var menuItem = {
                 path: 'browse/catalog-quality',
-                icon: 'fa fa-cube',
+                icon: 'fa fa-bullseye',
                 title: 'catalog-quality.main-menu.title',
                 priority: 100,
                 action: function () { $state.go('workspace.CatalogQualityState'); },
@@ -48,5 +48,11 @@ angular.module(moduleName, [])
                 permission: 'catalog-quality:read',
             };
             widgetService.registerWidget(productQualityWidget, 'itemDetail');
+
+            // Catalog product quality scoring entity type registration
+            qualityDataTypes.addType({
+                caption: 'quality-data-entity-types.catalog-product',
+                value: 'VirtoCommerce.CatalogModule.Core.Model.CatalogProduct'
+            });
         }
     ]);

@@ -54,6 +54,7 @@ public class EntityMappingTests
             Name = "Catalog-Publication-China",
             Description = "Readiness for Tmall, JD",
             Prompt = "Evaluate images, properties and descriptions",
+            EntityType = "VirtoCommerce.CatalogModule.Core.Model.CatalogProduct",
         };
     }
 
@@ -212,6 +213,7 @@ public class EntityMappingTests
         Assert.Equal("Catalog-Publication-China", restored.Name);
         Assert.Equal("Readiness for Tmall, JD", restored.Description);
         Assert.Equal("Evaluate images, properties and descriptions", restored.Prompt);
+        Assert.Equal("VirtoCommerce.CatalogModule.Core.Model.CatalogProduct", restored.EntityType);
     }
 
     [Fact]
@@ -226,6 +228,7 @@ public class EntityMappingTests
             Name = "old",
             Description = "old",
             Prompt = "old",
+            EntityType = "old",
         };
 
         // Act
@@ -237,6 +240,7 @@ public class EntityMappingTests
         Assert.Equal("Catalog-Publication-China", target.Name);
         Assert.Equal("Readiness for Tmall, JD", target.Description);
         Assert.Equal("Evaluate images, properties and descriptions", target.Prompt);
+        Assert.Equal("VirtoCommerce.CatalogModule.Core.Model.CatalogProduct", target.EntityType);
     }
 
     [Fact]

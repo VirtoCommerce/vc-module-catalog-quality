@@ -4,6 +4,17 @@
       <form class="form" name="formScope">
         <fieldset ng-disabled="!blade.hasUpdatePermission()" ng-init="setForm(formScope)">
           <div class="form-group">
+            <label class="form-label">{{ 'catalog-quality.blades.quality-target-details.labels.entity-type' | translate }}</label>
+            <div class="form-input">
+              <ui-select ng-model="blade.currentEntity.entityType" search-enabled="false" required="">
+                <ui-select-match placeholder="{{ 'catalog-quality.blades.quality-target-details.placeholders.entity-type-select' | translate }}">{{ $select.selected.caption | translate }}</ui-select-match>
+                <ui-select-choices repeat="entityType.value as entityType in blade.qualityDataRegisteredTypes">
+                  <span ng-bind-html="entityType.caption | translate"></span>
+                </ui-select-choices>
+              </ui-select>
+            </div>
+          </div>
+          <div class="form-group">
             <label class="form-label">{{ 'catalog-quality.blades.quality-target-details.labels.name' | translate }}</label>
             <div class="form-input">
               <input ng-model="blade.currentEntity.name" maxlength="256" required focus-on />

@@ -1,24 +1,24 @@
-name: vc_catalog_get_product_quality_data
+name: vc_quality_get_quality_data
 description: |
-  Load the previously saved quality evaluation of ONE product (of any entity type) for ONE quality
+  Load the previously saved quality evaluation of ONE entity (e.g. a catalog product) for ONE quality
   target: the saved `readinessScore` and `suggestions`, and when it was last evaluated.
-  A product has a separate evaluation per target. Use it to compare a new score with
+  An entity has a separate evaluation per target. Use it to compare a new score with
   the previous one — it is NOT needed before saving.
-  An empty result (no `id`) means the product was never evaluated for this target.
+  An empty result (no `id`) means the entity was never evaluated for this target.
 require_approval: false
 
 parameters:
   type: object
   required:
-    - productId
+    - entityId
     - entityType
     - targetId
   properties:
-    productId:
+    entityId:
       type: string
       description: |
-        Id of the product (of the `entityType` type), e.g. `"76b6d640-e398-472b-85fa-9583a6b8e694"`.
-        Use the product `id` — not its SKU/code or name.
+        Id of the evaluated entity (of the `entityType` type), e.g. `"76b6d640-e398-472b-85fa-9583a6b8e694"`.
+        Use the entity `id` — not its SKU/code or name.
     entityType:
       type: string
       description: |
@@ -33,7 +33,7 @@ execution:
   mappings:
     request:
       query:
-        entityId: "{{productId}}"
+        entityId: "{{entityId}}"
         entityType: "{{entityType}}"
         targetId: "{{targetId}}"
       body: ~
@@ -47,7 +47,6 @@ execution:
 #  - catalog-quality:read
 
 tags:
-  - product
   - evaluation
   - quality
   - read

@@ -1,7 +1,7 @@
 angular.module('virtoCommerce.catalogQuality')
     .controller('virtoCommerce.catalogQuality.qualityTargetDetailsController', [
-        '$scope', 'virtoCommerce.catalogQuality.webApi', 'platformWebApp.bladeNavigationService',
-        function ($scope, api, bladeNavigationService) {
+        '$scope', 'virtoCommerce.catalogQuality.webApi', 'platformWebApp.bladeNavigationService', 'platformWebApp.dialogService', 'virtoCommerce.catalogQuality.qualityDataTypes',
+        function ($scope, api, bladeNavigationService, dialogService, qualityDataTypes) {
             var blade = $scope.blade;
             var formScope;
 
@@ -13,6 +13,7 @@ angular.module('virtoCommerce.catalogQuality')
                 blade.originalEntity = entity;
                 blade.title = blade.isNew ? 'catalog-quality.blades.quality-target-details.title-new' : entity.name;
                 blade.subtitle = blade.isNew ? undefined : 'catalog-quality.blades.quality-target-details.subtitle';
+                blade.qualityDataRegisteredTypes = qualityDataTypes.getAllTypes();
                 blade.isLoading = false;
             }
 
@@ -24,8 +25,8 @@ angular.module('virtoCommerce.catalogQuality')
 
                 blade.isLoading = true;
 
-                api.targetSearch({ objectIds: [blade.currentEntityId], take: 1 }, function (data) {
-                    initialize(data.results[0]);
+                api.targetGetById({ id: blade.currentEntityId }, function (data) {
+                    initialize(data);
 
                     if (parentRefresh && blade.parentBlade.refresh) {
                         blade.parentBlade.refresh();
@@ -61,6 +62,30 @@ angular.module('virtoCommerce.catalogQuality')
                     }
                 }, function (error) {
                     bladeNavigationService.setError('Error ' + error.status, blade);
+                });
+            }
+
+            function deleteTarget() {
+                dialogService.showConfirmationDialog({
+                    id: 'confirmDeleteQualityTarget',
+                    title: 'catalog-quality.dialogs.quality-target-delete-one.title',
+                    message: 'catalog-quality.dialogs.quality-target-delete-one.message',
+                    messageValues: { name: blade.originalEntity.name },
+                    callback: function (remove) {
+                        if (remove) {
+                            blade.isLoading = true;
+
+                            api.targetDelete({ ids: [blade.currentEntityId] }, function () {
+                                // Deleted: drop unsaved changes, otherwise closing the blade asks to save them
+                                angular.copy(blade.originalEntity, blade.currentEntity);
+
+                                blade.parentBlade.refresh();
+                                bladeNavigationService.closeBlade(blade);
+                            }, function (error) {
+                                bladeNavigationService.setError('Error ' + error.status, blade);
+                            });
+                        }
+                    },
                 });
             }
 
@@ -100,6 +125,17 @@ angular.module('virtoCommerce.catalogQuality')
                     permission: blade.updatePermission,
                 },
             ];
+
+            // A new target is not saved yet, so there is nothing to delete
+            if (!blade.isNew) {
+                blade.toolbarCommands.push({
+                    name: 'platform.commands.delete',
+                    icon: 'fas fa-trash-alt',
+                    executeMethod: deleteTarget,
+                    canExecuteMethod: function () { return !blade.isLoading; },
+                    permission: 'catalog-quality:delete',
+                });
+            }
 
             blade.refresh();
         }]);

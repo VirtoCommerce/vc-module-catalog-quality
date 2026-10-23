@@ -1,16 +1,21 @@
-name: vc_catalog_search_quality_targets
+name: vc_quality_search_quality_targets
 description: |
-  List the quality targets — the scoring profiles a product can be evaluated against
-  (e.g. "Publication readiness for Chinese marketplaces"). Returns each target's `id`,
-  `name` and `description`, without its scoring prompt.
-  Call it with no arguments to get all targets, then pick the one whose name and
-  description best match the user's request by meaning — users rarely say a target's
-  exact name. Load the chosen target's scoring rules with `vc_catalog_get_quality_target`.
+  List the quality targets of ONE entity type — the scoring profiles an entity of this type
+  can be evaluated against (e.g. "Publication readiness for Chinese marketplaces").
+  Returns each target's `id`, `name` and `description`, without its scoring prompt.
+  Call it with only `entityType` to get all targets of that type, then pick the one whose
+  name and description best match the user's request by meaning — users rarely say a
+  target's exact name. Load the chosen target's scoring rules with `vc_quality_get_quality_target`.
 require_approval: false
 
 parameters:
   type: object
   properties:
+    entityType:
+      type: string
+      description: |
+        Full type name of the entities to evaluate — only targets of this type are returned.
+        Pass exactly the value given in your instructions.
     skip:
       type: integer
       default: 0
@@ -20,7 +25,8 @@ parameters:
       default: 100
       minimum: 1
       maximum: 100
-  required: []
+  required:
+    - entityType
 
 execution:
   endpoint: /api/catalogquality/target/search
@@ -28,6 +34,7 @@ execution:
   mappings:
     request:
       body:
+        entityType: "{{entityType}}"
         skip: "{{skip}}"
         take: "{{take}}"
     response:

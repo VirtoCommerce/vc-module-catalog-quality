@@ -5,7 +5,7 @@ using VirtoCommerce.CatalogQuality.Core.Common;
 using VirtoCommerce.CatalogQuality.Core.Models;
 using VirtoCommerce.CatalogQuality.Core.Services;
 
-namespace VirtoCommerce.CatalogQuality.Data.Queries.GetQualityData;
+namespace VirtoCommerce.CatalogQuality.Data.Queries;
 
 public class GetQualityDataQueryHandler : IQueryHandler<GetQualityDataQuery, QualityData>
 {

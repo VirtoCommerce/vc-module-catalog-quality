@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using VirtoCommerce.CatalogQuality.Core.Common;
 using VirtoCommerce.CatalogQuality.Core.Models;
 
-namespace VirtoCommerce.CatalogQuality.Data.Queries.GetQualityData;
+namespace VirtoCommerce.CatalogQuality.Data.Queries;
 
 public class GetQualityDataQuery : IQuery<QualityData>
 {

@@ -17,6 +17,10 @@ public class QualityTargetEntity : AuditableEntity, IDataEntity<QualityTargetEnt
 
     public string Prompt { get; set; }
 
+    [Required]
+    [StringLength(128)]
+    public string EntityType { get; set; }
+
     public virtual QualityTargetEntity FromModel(QualityTarget model, PrimaryKeyResolvingMap pkMap)
     {
         if (model == null)
@@ -35,6 +39,7 @@ public class QualityTargetEntity : AuditableEntity, IDataEntity<QualityTargetEnt
         Name = model.Name;
         Description = model.Description;
         Prompt = model.Prompt;
+        EntityType = model.EntityType;
 
         return this;
     }
@@ -55,6 +60,7 @@ public class QualityTargetEntity : AuditableEntity, IDataEntity<QualityTargetEnt
         model.Name = Name;
         model.Description = Description;
         model.Prompt = Prompt;
+        model.EntityType = EntityType;
 
         return model;
     }
@@ -69,5 +75,6 @@ public class QualityTargetEntity : AuditableEntity, IDataEntity<QualityTargetEnt
         target.Name = Name;
         target.Description = Description;
         target.Prompt = Prompt;
+        target.EntityType = EntityType;
     }
 }

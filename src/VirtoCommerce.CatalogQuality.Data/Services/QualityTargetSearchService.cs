@@ -42,6 +42,11 @@ public class QualityTargetSearchService : SearchService<SearchQualityTargetCrite
             query = query.Where(x => x.Name.Contains(criteria.Keyword));
         }
 
+        if (!string.IsNullOrEmpty(criteria.EntityType))
+        {
+            query = query.Where(x => x.EntityType == criteria.EntityType);
+        }
+
         return query;
     }
 

@@ -1,8 +1,8 @@
-name: vc_catalog_get_quality_target
+name: vc_quality_get_quality_target
 description: |
-  Load ONE quality target by id with its scoring `prompt` — the rules a product must be
+  Load ONE quality target by id with its scoring `prompt` — the rules an entity must be
   evaluated against for this target: criteria, weights, required data. Call it after
-  choosing the target with `vc_catalog_search_quality_targets`.
+  choosing the target with `vc_quality_search_quality_targets`.
   An empty result (no `id`) means there is no target with this id.
 require_approval: false
 
@@ -13,22 +13,19 @@ parameters:
   properties:
     targetId:
       type: string
-      description: Id of the quality target, as returned by `vc_catalog_search_quality_targets`.
+      description: Id of the quality target, as returned by `vc_quality_search_quality_targets`.
 
 execution:
-  endpoint: /api/catalogquality/target/search
-  method: POST
+  endpoint: /api/catalogquality/target/{targetId}
+  method: GET
   mappings:
     request:
-      body:
-        objectIds:
-          - "{{targetId}}"
-        take: 1
+      body: ~
     response:
-      id: "results[0].id"
-      name: "results[0].name"
-      description: "results[0].description"
-      prompt: "results[0].prompt"
+      id: "id"
+      name: "name"
+      description: "description"
+      prompt: "prompt"
 
 #permission:
 #  - catalog-quality:read

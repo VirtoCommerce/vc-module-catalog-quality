@@ -48,9 +48,9 @@ public class SearchServicesTests
         return new QualityDataEntity { Id = id, EntityId = entityId, EntityType = entityType };
     }
 
-    private static QualityTargetEntity Target(string id, string name)
+    private static QualityTargetEntity Target(string id, string name, string entityType = ProductType)
     {
-        return new QualityTargetEntity { Id = id, Name = name };
+        return new QualityTargetEntity { Id = id, Name = name, EntityType = entityType };
     }
 
     // --- QualityDataSearchService ---
@@ -156,7 +156,7 @@ public class SearchServicesTests
     public void TargetSearch_NoFilters_ReturnsAllTargets()
     {
         // Arrange
-        var service = CreateTargetSearchService(Target("t1", "Catalog Publishing"), Target("t2", "Amazon DE"));
+        var service = CreateTargetSearchService(Target("t1", "Catalog Publishing"), Target("t2", "Amazon DE", "Other.EntityType"));
 
         // Act
         var result = service.Query(new SearchQualityTargetCriteria());
@@ -202,6 +202,35 @@ public class SearchServicesTests
 
         // Assert
         Assert.Equal(["t2"], result);
+    }
+
+    [Fact]
+    public void TargetSearch_EntityType_FiltersByEntityType()
+    {
+        // Arrange
+        var service = CreateTargetSearchService(Target("t1", "Publication China"), Target("t2", "Publication DE", "Other.EntityType"));
+
+        // Act
+        var result = service.Query(new SearchQualityTargetCriteria { EntityType = ProductType });
+
+        // Assert
+        Assert.Equal(["t1"], result);
+    }
+
+    [Fact]
+    public void TargetSearch_EntityTypeAndKeyword_AreCombined()
+    {
+        // Arrange
+        var service = CreateTargetSearchService(
+            Target("t1", "Publication China"),
+            Target("t2", "Publication DE"),
+            Target("t3", "Publication China", "Other.EntityType"));
+
+        // Act
+        var result = service.Query(new SearchQualityTargetCriteria { EntityType = ProductType, Keyword = "China" });
+
+        // Assert
+        Assert.Equal(["t1"], result);
     }
 
     [Fact]

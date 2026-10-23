@@ -1,7 +1,7 @@
 {
   "catalog-quality": {
     "main-menu": {
-      "title": "Catalog quality"
+      "title": "Quality targets"
     },
     "blades": {
       "quality-data-list": {
@@ -23,7 +23,7 @@
           "entity-id": "Entity ID",
           "readiness-score": "Quality score",
           "suggestions": "Suggestions",
-          "no-suggestions": "No suggestions - the product data was not scored.",
+          "no-suggestions": "No suggestions - this entity was not scored for this target yet.",
           "suggestions-url": "Suggestions file",
           "created": "Created",
           "modified": "Modified"
@@ -32,20 +32,23 @@
       "quality-target-list": {
         "title": "Quality targets",
         "labels": {
-          "name": "Name"
+          "name": "Name",
+          "entity-type": "Entity type"
         }
       },
       "quality-target-details": {
         "title-new": "New quality target",
         "subtitle": "Quality target",
         "labels": {
+          "entity-type": "Entity type",
           "name": "Name",
           "description": "Description",
           "prompt": "Prompt"
         },
         "placeholders": {
           "description": "One or two sentences on what this target is for, e.g. \"Readiness of products for publishing on Chinese marketplaces (Tmall, JD)\". The AI uses it to pick the target from the user's request.",
-          "prompt":"Describe how products are scored for this target: criteria, weights, required languages..."
+          "prompt": "Describe how to score items for this target: criteria, weights, required languages...",
+          "entity-type-select": "Select entity type..."
         }
       }
     },
@@ -61,6 +64,10 @@
       "quality-target-delete": {
         "title": "Delete quality targets",
         "message": "Are you sure you want to delete the selected quality targets?"
+      },
+      "quality-target-delete-one": {
+        "title": "Delete quality target",
+        "message": "Are you sure you want to delete the quality target \"{{name}}\"?"
       }
     },
     "widgets": {
@@ -83,5 +90,8 @@
         "description": "CatalogQuality Enabled setting"
       }
     }
+  },
+  "quality-data-entity-types": {
+    "catalog-product": "Catalog product"
   }
 }
