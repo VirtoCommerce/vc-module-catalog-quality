@@ -37,9 +37,11 @@ public class CatalogQualityTargetController : Controller
     [HttpGet]
     [Route("{id}")]
     [Authorize(Permissions.Read)]
-    public async Task<ActionResult<QualityTarget>> TargetGetById([FromRoute] GetQualityTargetQuery query)
+    public async Task<ActionResult<QualityTarget>> TargetGetById([FromRoute] string id)
     {
-        var result = await _mediator.Send(query);
+        // Bound by the route's own name: binding the query's "Id" made Swagger declare a path parameter that is not
+        // in the "{id}" template, so generated clients never substituted it
+        var result = await _mediator.Send(new GetQualityTargetQuery { Id = id });
         return Ok(result);
     }
 

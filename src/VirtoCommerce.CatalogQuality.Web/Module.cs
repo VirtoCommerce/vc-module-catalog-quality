@@ -56,6 +56,9 @@ public class Module : IModule, IHasConfiguration
         serviceCollection.AddTransient<IQualityTargetCrudService, QualityTargetCrudService>();
         serviceCollection.AddTransient<IQualityTargetSearchService, QualityTargetSearchService>();
 
+        // filled by the modules that score entities, in their PostInitialize
+        serviceCollection.AddSingleton<IQualityEntityTypeRegistrar, QualityEntityTypeRegistrar>();
+
         serviceCollection.AddMediatR(configuration => configuration.RegisterServicesFromAssemblyContaining<Anchor>());
     }
 
@@ -70,6 +73,10 @@ public class Module : IModule, IHasConfiguration
         // Register permissions
         var permissionsRegistrar = serviceProvider.GetRequiredService<IPermissionsRegistrar>();
         permissionsRegistrar.RegisterPermissions(ModuleInfo.Id, "CatalogQuality", ModuleConstants.Security.Permissions.AllPermissions);
+
+        // Register the entity types this module scores
+        var entityTypeRegistrar = serviceProvider.GetRequiredService<IQualityEntityTypeRegistrar>();
+        entityTypeRegistrar.Register(ModuleConstants.QualityEntityType.CatalogProduct, "Catalog product");
 
         // Apply migrations
         using var serviceScope = serviceProvider.CreateScope();

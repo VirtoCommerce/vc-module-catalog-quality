@@ -1,0 +1,41 @@
+{
+  "CATALOG_QUALITY": {
+    "MENU": {
+      "TITLE": "Quality targets"
+    },
+    "TOOLBAR": {
+      "REFRESH": "Refresh",
+      "ADD": "Add",
+      "SAVE": "Save",
+      "RESET": "Reset",
+      "DELETE": "Delete"
+    },
+    "TARGETS": {
+      "TITLE": "Quality targets",
+      "EMPTY": "No quality targets yet",
+      "NAME": "Name",
+      "ENTITY_TYPE": "Entity type",
+      "DELETE_CONFIRM": "Are you sure you want to delete the selected quality targets?"
+    },
+    "TARGET": {
+      "TITLE_NEW": "New quality target",
+      "SUBTITLE": "Quality target",
+      "ENTITY_TYPE": "Entity type",
+      "ENTITY_TYPE_PLACEHOLDER": "Select entity type...",
+      "NAME": "Name",
+      "DESCRIPTION": "Description",
+      "DESCRIPTION_PLACEHOLDER": "One or two sentences on what this target is for, e.g. \"Readiness of products for publishing on Chinese marketplaces (Tmall, JD)\". The AI uses it to pick the target from the user's request.",
+      "PROMPT": "Prompt",
+      "PROMPT_PLACEHOLDER": "Describe how to score items for this target: criteria, weights, required languages...",
+      "CLOSE_CONFIRM": "Quality target has been modified. Close without saving?",
+      "DELETE_CONFIRM": "Are you sure you want to delete the quality target \"{name}\"?"
+    },
+    "DATA": {
+      "TITLE": "Quality data",
+      "NO_SUGGESTIONS": "No suggestions - this entity was not scored for this target yet."
+    },
+    "WIDGET": {
+      "TITLE": "Product data score"
+    }
+  }
+}

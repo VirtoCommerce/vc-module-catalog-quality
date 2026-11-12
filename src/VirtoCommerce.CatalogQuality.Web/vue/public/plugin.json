@@ -1,0 +1,17 @@
+{
+  "remote": { "name": "catalog_quality_admin", "exposed": "./Module" },
+  "contributions": {
+    "menu": [
+      {
+        "id": "catalog-quality",
+        "sectionId": "catalog",
+        "title": "Quality targets",
+        "titleKey": "CATALOG_QUALITY.MENU.TITLE",
+        "icon": "lucide-target",
+        "route": "/catalog-quality",
+        "permission": "catalog-quality:access",
+        "priority": 400
+      }
+    ]
+  }
+}

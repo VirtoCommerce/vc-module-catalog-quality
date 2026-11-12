@@ -20,6 +20,7 @@ public class QueryHandlersTests
     private readonly Mock<IQualityDataService> _qualityDataServiceMock = new();
     private readonly Mock<IQualityTargetSearchService> _qualityTargetSearchServiceMock = new();
     private readonly Mock<IQualityTargetCrudService> _qualityTargetCrudServiceMock = new();
+    private readonly Mock<IQualityEntityTypeRegistrar> _qualityEntityTypeRegistrarMock = new();
 
     // --- GetQualityDataQueryHandler ---
 
@@ -207,6 +208,36 @@ public class QueryHandlersTests
     {
         // Arrange
         var handler = new SearchQualityTargetQueryHandler(_qualityTargetSearchServiceMock.Object);
+
+        // Act
+        var act = () => handler.Handle(null, CancellationToken.None);
+
+        // Assert
+        await Assert.ThrowsAsync<ArgumentNullException>(act);
+    }
+
+    // --- GetQualityEntityTypesQueryHandler ---
+
+    [Fact]
+    public async Task GetQualityEntityTypes_ReturnsRegisteredTypes()
+    {
+        // Arrange
+        var expected = new List<QualityEntityType> { new() { Id = ProductType, Name = "Catalog product" } };
+        _qualityEntityTypeRegistrarMock.Setup(x => x.GetAll()).Returns(expected);
+        var handler = new GetQualityEntityTypesQueryHandler(_qualityEntityTypeRegistrarMock.Object);
+
+        // Act
+        var result = await handler.Handle(new GetQualityEntityTypesQuery(), CancellationToken.None);
+
+        // Assert
+        Assert.Same(expected, result);
+    }
+
+    [Fact]
+    public async Task GetQualityEntityTypes_NullRequest_Throws()
+    {
+        // Arrange
+        var handler = new GetQualityEntityTypesQueryHandler(_qualityEntityTypeRegistrarMock.Object);
 
         // Act
         var act = () => handler.Handle(null, CancellationToken.None);
