@@ -6,6 +6,7 @@
     width="50%"
   >
     <VcDataTable
+      v-model:search-value="keyword"
       v-model:selection="selection"
       v-model:sort-field="sortField"
       v-model:sort-order="sortOrder"
@@ -13,6 +14,7 @@
       :items="items"
       :total-count="totalCount"
       :pagination="pagination"
+      :searchable="true"
       :state-key="'CATALOG_QUALITY_TARGETS'"
       :active-item-id="activeItemId"
       :empty-state="{ icon: 'lucide-target', title: $t('CATALOG_QUALITY.TARGETS.EMPTY') }"
@@ -36,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { useBlade, useDataTablePagination, useDataTableSort, usePopup, type IBladeToolbar } from "@vc-shell/framework";
+import { useBlade, useDataTablePagination, useDataTableSort, useFunctions, usePopup, type IBladeToolbar } from "@vc-shell/framework";
 import { VcBlade, VcColumn, VcDataTable } from "@vc-shell/framework/ui";
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
@@ -56,9 +58,11 @@ defineBlade({
 const { t } = useI18n({ useScope: "global" });
 const { openBlade, closeChildren, exposeToChildren } = useBlade();
 const { showConfirmation } = usePopup();
+const { debounce } = useFunctions();
 
 const items = ref<QualityTarget[]>([]);
 const totalCount = ref(0);
+const keyword = ref("");
 const loading = ref(false);
 const selection = ref<QualityTarget[]>([]);
 const activeItemId = ref<string>();
@@ -72,7 +76,7 @@ loadEntityTypes().then((x) => (entityTypes.value = x));
 async function load() {
   loading.value = true;
   try {
-    const res = await api.targets.targetSearch({ sort: sortExpression.value, skip: pagination.skip, take: PAGE_SIZE });
+    const res = await api.targets.targetSearch({ keyword: keyword.value || undefined, sort: sortExpression.value, skip: pagination.skip, take: PAGE_SIZE });
     items.value = res.results ?? [];
     totalCount.value = res.totalCount ?? 0;
   } finally {
@@ -81,6 +85,8 @@ async function load() {
 }
 load();
 watch([sortExpression, () => pagination.skip], load);
+// from page 2 setPage(1) triggers the skip watcher, which loads
+watch(keyword, debounce(() => (pagination.skip ? pagination.setPage(1) : load()), 400));
 
 function edit(id?: string) {
   activeItemId.value = id;
